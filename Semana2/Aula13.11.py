@@ -42,3 +42,18 @@ p = {1,2,3,4,5}
 i = {1,3,5}
 
 print(f"Intersecção = {p.intersection(i)}")
+
+#for
+lista_compra = ['bolacha', 'biscoito', 'fini', 'ovos', 'frango']
+for valor, item in enumerate(lista_compra):
+    print(f"{valor+1} - {item}")
+
+#while
+lista = [1,2,3,4,5,6,7,8,9,10]
+i = 0
+while True:
+    try:
+        print(lista[i],end= ', ')
+    except:
+        break
+    i+=1
