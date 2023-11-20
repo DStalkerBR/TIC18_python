@@ -1,0 +1,5 @@
+id,descricao,status
+4,Arruma a casa,[x]
+1,Preparar a marmita,[x]
+2,Arrumar a mochila,[ ]
+3,Fechar as janelas,[ ]
