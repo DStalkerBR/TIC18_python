@@ -10,22 +10,25 @@ def registrar_tarefa(tarefas, nova_tarefa):
 
 def realizar_tarefa (tarefas, identificador):
     for index, tarefa in enumerate(tarefas):
-        if tarefa['id'] == identificador:
+        if tarefa['id'] == identificador and tarefa['status'] == '[ ]':
             tarefa['status'] = '[x]'
             tarefas.insert(0, tarefas.pop(index))
             print (f"Tarefa \"{tarefa['id']}. {tarefa['descricao']}\" realizada!!")
             break
     else:
-        print(f"Tarefa com id {identificador} não encontrada!!")
+        print(f"Tarefa com id {identificador} já realizada ou não encontrada!!")
         
 def editar_tarefa (tarefas, identificador):
-    for index, tarefa in enumerate(tarefas):
+    for tarefa in tarefas:
         if tarefa['id'] == identificador :
             print("Tarefa encontrada:")
             print(f"{tarefa['id']}. {tarefa['descricao']} {tarefa['status']}")
             nova_tarefa = input("Nova descrição da tarefa: ")
             tarefa['descricao'] = nova_tarefa
             print (f"Tarefa editada!!")
+            break
+    else:
+        print(f"Tarefa com id {identificador} não encontrada!!")
             
 
 def main ():
