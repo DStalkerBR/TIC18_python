@@ -19,6 +19,21 @@ def inserir_produto(produtos:list[dict]):
     print("Produto inserido com sucesso!")
     pressionar_enter()
     
+def excluir_produto(produtos:list[dict]):
+    limpar_tela()
+    print("+---------------+----------------------+-----------+")
+    print("|                   Excluir produto                |")
+    print("+---------------+----------------------+-----------+")
+    cod_excluir = input("Digite o código do produto que deseja excluir: ")
+    for produto in produtos:
+        if produto['codigo'] == cod_excluir:
+            produtos.remove(produto)
+            print(f"Produto '{produto['nome']}' excluido com sucesso!")
+            break
+    else:
+        print("Produto não encontrado!")
+    pressionar_enter()
+
 def listar_produtos(produtos:list[dict]):    
     inicio = 0
     produtos_preco = sorted(produtos, key=lambda produto: produto['preco'])
@@ -41,9 +56,21 @@ def listar_produtos(produtos:list[dict]):
         else:
             pressionar_enter("Saindo... Pressione ENTER para continuar...")
 
+def consultar_preco(produtos:list[dict]):
+    limpar_tela()
+    print("+---------------+----------------------+-----------+")
+    print("|                   Consultar preço                |")    
+    print("+---------------+----------------------+-----------+")
+    cod_consultar = input("Digite o código do produto que deseja consultar: ")
+    for produto in produtos:
+        if produto['codigo'] == cod_consultar:
+            print(f"O preço do produto {produto['nome']} é R${produto['preco']:.2f}")
+            break
+    else:
+        print("Produto não encontrado!")
+    pressionar_enter()
+
 def main():
-    # inicia lista de dicionario     
-    # codigo pode ser string numero de 11 caracters
     produtos:list[dict] = [{'codigo': '0000000000001', 'nome': 'Arroz', 'preco': 10.0}, \
                             {'codigo': '0000000000002', 'nome': 'Feijão', 'preco': 8.0}, \
                             {'codigo': '0000000000003', 'nome': 'Macarrão', 'preco': 5.0}, \
@@ -76,13 +103,11 @@ def main():
             case 1:
                 inserir_produto(produtos)
             case 2:
-                print("Excluir um produto")
-                # excluir_produto(codigo)
+                excluir_produto(produtos)
             case 3:
                 listar_produtos(produtos)
             case 4:
-                print("Consultar o preço de um produto")
-                # consultar_preco(codigo)
+                consultar_preco(produtos)
             case 5:
                 print("Sair")
                 break
