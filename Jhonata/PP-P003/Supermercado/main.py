@@ -1,5 +1,6 @@
+import os
+
 def limpar_tela():
-    import os
     os.system('cls' if os.name == 'nt' else 'clear')
     
 def pressionar_enter(mensagem = "Pressione ENTER para continuar..."):
