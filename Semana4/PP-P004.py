@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
+from typing import List
 
 class Data:
-    
-    def __init__(self, dia = 1, mes = 1, ano = 2000):
+    def __init__(self, dia=1, mes=1, ano=2000):
         if dia < 1 or dia > 31:
             raise ValueError("Dia inválido")
         if mes < 1 or mes > 12:
             raise ValueError("Mês inválido")
-        if ano < 1900 or ano > 2100:
+        if ano < 2000 or ano > 2100:
             raise ValueError("Ano inválido")
         self.__dia = dia
         self.__mes = mes
@@ -16,7 +16,7 @@ class Data:
     @property
     def dia(self):
         return self.__dia
-    
+
     @dia.setter
     def dia(self, dia):
         if dia < 1 or dia > 31:
@@ -26,7 +26,7 @@ class Data:
     @property
     def mes(self):
         return self.__mes
-    
+
     @mes.setter
     def mes(self, mes):
         if mes < 1 or mes > 12:
@@ -36,21 +36,21 @@ class Data:
     @property
     def ano(self):
         return self.__ano
-    
+
     @ano.setter
     def ano(self, ano):
         if ano < 2000 or ano > 2100:
             raise ValueError("Ano inválido")
         self.__ano = ano
-    
+
     def __str__(self):
         return "{}/{}/{}".format(self.__dia, self.__mes, self.__ano)
 
     def __eq__(self, outraData):
-        return  self.__dia == outraData.__dia and \
-                self.__mes == outraData.__mes and \
-                self.__ano == outraData.__ano
-    
+        return self.__dia == outraData.__dia and \
+               self.__mes == outraData.__mes and \
+               self.__ano == outraData.__ano
+
     def __lt__(self, outraData):
         if self.__ano < outraData.__ano:
             return True
@@ -61,7 +61,7 @@ class Data:
                 if self.__dia < outraData.__dia:
                     return True
         return False
-    
+
     def __gt__(self, outraData):
         if self.__ano > outraData.__ano:
             return True
@@ -73,11 +73,10 @@ class Data:
                     return True
         return False
 
-class AnaliseDados(ABC): 
-
-    @abstractmethod
+class AnaliseDados(ABC):
     def __init__(self, tipoDeDados):
         self.__tipoDeDados = tipoDeDados
+        self.__lista = []
 
     @abstractmethod
     def entradaDeDados(self):
@@ -86,7 +85,7 @@ class AnaliseDados(ABC):
     @abstractmethod
     def mostraMediana(self):
         pass
-    
+
     @abstractmethod
     def mostraMenor(self):
         pass
@@ -98,186 +97,224 @@ class AnaliseDados(ABC):
     @abstractmethod
     def listarEmOrdem(self):
         pass
+
+    def dummy(self):
+        pass
+
+    def adicionaDado(self, dado):
+        if not isinstance(dado, self.__tipoDeDados):
+            raise ValueError("Tipo de dado incorreto")
+        self.__lista.append(dado)
+
+    def ordenaLista(self):
+        self.__lista.sort()
 
 class ListaNomes(AnaliseDados):
-    
     def __init__(self):
-        super().__init__(type("String"))
-        self.__lista = []        
+        super().__init__(str)
 
     def entradaDeDados(self):
-        elementos_lista = int(input("Digite a quantidade de nomes que deseja inserir: "))
-        for i in range(elementos_lista):
-            self.__lista.append(input("Digite o nome: "))
-        print('Nomes inseridos com sucesso!')
-        
+        n = int(input("Quantos nomes deseja adicionar? "))
+        for _ in range(n):
+            nome = input("Digite um nome: ")
+            self.adicionaDado(nome)
+
     def mostraMediana(self):
-        self.listarEmOrdem()
-        if len(self.__lista) % 2 == 0:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
+        self.ordenaLista()
+        tamanho = len(self._AnaliseDados__lista)
+        if tamanho % 2 == 0:
+            mediana = self._AnaliseDados__lista[tamanho // 2 - 1]
         else:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
+            mediana = self._AnaliseDados__lista[tamanho // 2]
+        print(f"Mediana dos nomes: {mediana}")
 
-    def mostraMenor(self): 
-        print(f'Menor : {self.__lista[0]}')
-    
+    def mostraMenor(self):
+        print(f"Menor nome: {min(self._AnaliseDados__lista)}")
+
     def mostraMaior(self):
-        print(f'Maior : {self.__lista[-1]}')
-    
-    def listarEmOrdem(self):
-        self.__lista.sort()
+        print(f"Maior nome: {max(self._AnaliseDados__lista)}")
 
-    def __str__(self):
-        pass
-	
+    def listarEmOrdem(self):
+        print("Lista de nomes em ordem alfabética:")
+        for nome in sorted(self._AnaliseDados__lista):
+            print(nome)
+
 class ListaDatas(AnaliseDados):
-        
     def __init__(self):
-        super().__init__(type(Data))
-        self.__lista = []        
-    
+        super().__init__(Data)
+
     def entradaDeDados(self):
-        quantidade = int(input("Digite a quantidade de datas que deseja inserir: "))
-        for i in range(quantidade):
+        n = int(input("Quantas datas deseja adicionar? "))
+        for _ in range(n):
             dia = int(input("Digite o dia: "))
             mes = int(input("Digite o mês: "))
-            ano = int(input("Digite o ano: "))
-            self.__lista.append(Data(dia, mes, ano))
-        print('Datas inseridas com sucesso!')    
+            ano = int(input("Digite o ano entre 2000 e 2100: "))
+            data = Data(dia, mes, ano)
+            self.adicionaDado(data)
 
     def mostraMediana(self):
-        self.listarEmOrdem()
-        if len(self.__lista) % 2 == 0:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
+        self.ordenaLista()
+        tamanho = len(self._AnaliseDados__lista)
+        if tamanho % 2 == 0:
+            mediana = self._AnaliseDados__lista[tamanho // 2 - 1]
         else:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
-     
+            mediana = self._AnaliseDados__lista[tamanho // 2]
+        print(f"Mediana das datas: {mediana}")
+
     def mostraMenor(self):
-        print(f'Menor : {self.__lista[0]}')
-        
+        print(f"Menor data: {min(self._AnaliseDados__lista)}")
+
     def mostraMaior(self):
-        print(f'Maior : {self.__lista[-1]}')
-    
+        print(f"Maior data: {max(self._AnaliseDados__lista)}")
+
     def listarEmOrdem(self):
-        self.__lista.sort()
+        print("Lista de datas em ordem crescente:")
+        for data in sorted(self._AnaliseDados__lista):
+            print(data)
 
-    def __str__(self):
-        pass
-
-class ListaSalarios(AnaliseDados):
-
+class ListaSalarios(AnaliseDados):  # Adicionada a classe ListaSalarios
     def __init__(self):
-        super().__init__(type(float))
-        self.__lista = []        
+        super().__init__(float)
 
     def entradaDeDados(self):
-        quantidade = int(input("Digite a quantidade de salários que deseja inserir: "))
-        for i in range(quantidade):
-            self.__lista.append(float(input("Digite o salário: ")))
-        print('Salários inseridos com sucesso!')
+        salario = float(input("Digite um salário: "))
+        self.adicionaDado(salario)
 
     def mostraMediana(self):
-        self.listarEmOrdem()
-        if len(self.__lista) % 2 == 0:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
+        self.ordenaLista()
+        tamanho = len(self._AnaliseDados__lista)
+        if tamanho % 2 == 0:
+            mediana = (self._AnaliseDados__lista[tamanho // 2 - 1] + self._AnaliseDados__lista[tamanho // 2]) / 2
         else:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
+            mediana = self._AnaliseDados__lista[tamanho // 2]
+        print(f"Mediana dos salários: {mediana}")
 
     def mostraMenor(self):
-        print(f'Menor : {self.__lista[0]}')
-        
-    def mostraMaior(self):
-        print(f'Maior : {self.__lista[-1]}')
-        
-    def listarEmOrdem(self):
-        self.__lista.sort()
-    
-    def __str__(self):
-        pass
+        print(f"Menor salário: {min(self._AnaliseDados__lista)}")
 
-class ListaIdades(AnaliseDados):
-    
+    def mostraMaior(self):
+        print(f"Maior salário: {max(self._AnaliseDados__lista)}")
+
+    def listarEmOrdem(self):
+        print("Lista de salários em ordem crescente:")
+        for salario in sorted(self._AnaliseDados__lista):
+            print(salario)
+
+class ListaIdades(AnaliseDados):  # Adicionada a classe ListaIdades
     def __init__(self):
-        super().__init__(type(int))
-        self.__lista = []        
-    
-    def entradaDeDados(self):
-        quantidade = int(input("Digite a quantidade de idades que deseja inserir: "))
-        for i in range(quantidade):
-            self.__lista.append(int(input("Digite a idade: ")))
-        print('Idades inseridas com sucesso!')
-        
-    def mostraMediana(self):
-        self.listarEmOrdem()
-        if len(self.__lista) % 2 == 0:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
-        else:
-            print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
-    
-    def mostraMenor(self):
-        print(f'Menor : {self.__lista[0]}')
-        
-    
-    def mostraMaior(self):
-        print(f'Maior : {self.__lista[-1]}')
-    
-    def listarEmOrdem(self):
-        self.__lista.sort()
-        
-    def __str__(self):
-        pass
+        super().__init__(int)
 
-def percorrerNomeSalario(listaNomes, listaSalarios):
-    for nome, salario in zip(listaNomes, listaSalarios):
-        print(f'Nome : {nome}\t| |\tSalário : R$ {salario:.2f}')
+    def entradaDeDados(self):
+        idade = int(input("Digite uma idade: "))
+        self.adicionaDado(idade)
+
+    def mostraMediana(self):
+        self.ordenaLista()
+        tamanho = len(self._AnaliseDados__lista)
+        if tamanho % 2 == 0:
+            mediana = (self._AnaliseDados__lista[tamanho // 2 - 1] + self._AnaliseDados__lista[tamanho // 2]) / 2
+        else:
+            mediana = self._AnaliseDados__lista[tamanho // 2]
+        print(f"Mediana das idades: {mediana}")
+
+    def mostraMenor(self):
+        print(f"Menor idade: {min(self._AnaliseDados__lista)}")
+
+    def mostraMaior(self):
+        print(f"Maior idade: {max(self._AnaliseDados__lista)}")
+
+    def listarEmOrdem(self):
+        print("Lista de idades em ordem crescente:")
+        for idade in sorted(self._AnaliseDados__lista):
+            print(idade)
+
+def incluir_nome(lista):
+    nome = input("Digite um nome: ")
+    lista.adicionaDado(nome)
+    print("Nome incluído com sucesso!")
+
+def incluir_salario(lista):
+    salario = float(input("Digite um salário: "))
+    lista.adicionaDado(salario)
+    print("Salário incluído com sucesso!")
+
+def incluir_data(lista):
+    dia = int(input("Digite o dia: "))
+    mes = int(input("Digite o mês: "))
+    ano = int(input("Digite o ano entre 2000 e 2100: "))
+    data = Data(dia, mes, ano)
+    lista.adicionaDado(data)
+    print("Data incluída com sucesso!")
+
+def incluir_idade(lista):
+    idade = int(input("Digite uma idade: "))
+    lista.adicionaDado(idade)
+    print("Idade incluída com sucesso!")
+
+def percorrer_listas(listas):
+    for lista in listas:
+        print(f"Conteúdo da lista {type(lista).__name__}:")
+        for item in lista._AnaliseDados__lista:
+            print(item)
+        print("___________________")
+
+def calcular_folha_salarios(lista_salarios):
+    reajuste_percentual = 10
+    for i in range(len(lista_salarios._AnaliseDados__lista)):
+        salario_atual = lista_salarios._AnaliseDados__lista[i]
+        salario_reajustado = salario_atual * (1 + reajuste_percentual / 100)
+        lista_salarios._AnaliseDados__lista[i] = salario_reajustado
+    print("Folha de salários recalculada com sucesso!")
+
+def modificar_datas_antes_2019(lista_datas):
+    for i in range(len(lista_datas._AnaliseDados__lista)):
+        data_atual = lista_datas._AnaliseDados__lista[i]
+        if data_atual.ano < 2019:
+            nova_data = Data(1, 1, 2019)
+            lista_datas._AnaliseDados__lista[i] = nova_data
+    print("Datas modificadas com sucesso!")
+
 
 def main():
     nomes = ListaNomes()
-    datas = ListaDatas()
     salarios = ListaSalarios()
+    datas = ListaDatas()
     idades = ListaIdades()
 
-    listaListas = [nomes, datas, salarios, idades]
+    listas = [nomes, salarios, datas, idades]
 
-    for lista in listaListas:
-        lista.entradaDeDados()
-        lista.mostraMediana()
-        lista.mostraMenor()
-        lista.mostraMaior()
-        print("___________________")
-    
-    print("Teste Zip:")
-    nomes = ["David", "Kainê", "Igor", "Bia", "Ian", "Pedro"]
-    salarios = [1000.00, 2000.00, 3000.00, 4000.00, 5000.00, 6000.00]
+    while True:
+        print("\nMenu de Opções:")
+        print("1. Incluir um nome na lista de nomes")
+        print("2. Incluir um salário na lista de salários")
+        print("3. Incluir uma data na lista de datas")
+        print("4. Incluir uma idade na lista de idades")
+        print("5. Percorrer as listas de nomes, salários, datas e idades")
+        print("6. Calcular o valor da folha com um reajuste de 10%")
+        print("7. Modificar o dia das datas anteriores a 2019")
+        print("8. Sair")
 
-    percorrerNomeSalario(nomes, salarios)
-    print("__________________")
-    
-    print("Teste Map:")
-    salarios_reajustados = list(map(lambda x: x * 1.1, salarios))
-    for salario in salarios_reajustados:
-        print(f'Salário reajustado em 10%: R$ {salario:.2f}')
-    print("__________________")
+        opcao = input("Escolha uma opção (1-8): ")
 
-    print("Teste Filter:")
-    data1 = Data()
-    data2 = Data(5, 12, 1972)
-    data3 = Data(1, 1, 2022)
-
-    datas = [data1, data2, data3]
-    
-    datas_filtradas = list(filter(lambda x: x < Data(1, 1, 2019), datas))
-    print("Datas filtradas:")
-    for d in datas_filtradas:
-        print(d)
-
-    datas_modificadas = [Data(1, x.mes, x.ano) for x in datas_filtradas]
-    print("Datas modificadas:")
-    for d in datas_modificadas:
-        print(d)
-    print("__________________")
-
-    print("Fim do teste!!!")
+        if opcao == '1':
+            incluir_nome(nomes)
+        elif opcao == '2':
+            incluir_salario(salarios)
+        elif opcao == '3':
+            incluir_data(datas)
+        elif opcao == '4':
+            incluir_idade(idades)
+        elif opcao == '5':
+            percorrer_listas(listas)
+        elif opcao == '6':
+            calcular_folha_salarios(salarios)
+        elif opcao == '7':
+            modificar_datas_antes_2019(datas)
+        elif opcao == '8':
+            print("Saindo do programa.")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
 
 if __name__ == "__main__":
     main()
