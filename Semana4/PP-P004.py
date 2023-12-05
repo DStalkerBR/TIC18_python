@@ -227,6 +227,10 @@ class ListaIdades(AnaliseDados):
     def __str__(self):
         pass
 
+def percorrerNomeSalario(listaNomes, listaSalarios):
+    for nome, salario in zip(listaNomes, listaSalarios):
+        print(f'Nome : {nome}\t| |\tSalário : R$ {salario:.2f}')
+
 def main():
     nomes = ListaNomes()
     datas = ListaDatas()
@@ -241,6 +245,37 @@ def main():
         lista.mostraMenor()
         lista.mostraMaior()
         print("___________________")
+    
+    print("Teste Zip:")
+    nomes = ["David", "Kainê", "Igor", "Bia", "Ian", "Pedro"]
+    salarios = [1000.00, 2000.00, 3000.00, 4000.00, 5000.00, 6000.00]
+
+    percorrerNomeSalario(nomes, salarios)
+    print("__________________")
+    
+    print("Teste Map:")
+    salarios_reajustados = list(map(lambda x: x * 1.1, salarios))
+    for salario in salarios_reajustados:
+        print(f'Salário reajustado em 10%: R$ {salario:.2f}')
+    print("__________________")
+
+    print("Teste Filter:")
+    data1 = Data()
+    data2 = Data(5, 12, 1972)
+    data3 = Data(1, 1, 2022)
+
+    datas = [data1, data2, data3]
+    
+    datas_filtradas = list(filter(lambda x: x < Data(1, 1, 2019), datas))
+    print("Datas filtradas:")
+    for d in datas_filtradas:
+        print(d)
+
+    datas_modificadas = [Data(1, x.mes, x.ano) for x in datas_filtradas]
+    print("Datas modificadas:")
+    for d in datas_modificadas:
+        print(d)
+    print("__________________")
 
     print("Fim do teste!!!")
 
