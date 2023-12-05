@@ -1,5 +1,6 @@
 
 from abc import ABC, abstractmethod
+import os
 
 class Data:
     
@@ -83,6 +84,10 @@ class AnaliseDados(ABC):
     @abstractmethod
     def entradaDeDados(self):
         pass
+    
+    @abstractmethod
+    def adicionarDado(self):
+        pass
 
     @abstractmethod
     def mostraMediana(self):
@@ -116,9 +121,12 @@ class ListaNomes(AnaliseDados):
         print("Digite a quantidade de nomes que deseja inserir na lista: ")
         numero = int(input())
         for i in range(numero):
-            nome = input(f"Digite o {i+1} nome: ")
-            self.__lista.append(nome)
-
+            self.adicionarDado()
+            
+    def adicionarDado(self):
+        nome = input(f"Digite o nome: ")
+        self.__lista.append(nome)
+ 
     def mostraMediana(self):
         '''
         Este método ordena a lista e mostra o
@@ -177,10 +185,13 @@ class ListaDatas(AnaliseDados):
         print("Digite a quantidade de datas que deseja inserir na lista: ")
         numero = int(input())
         for i in range(numero):
-            data = input("Digite a data no formato dd/mm/aaaa: ")
-            dia, mes, ano = data.split("/")
-            data = Data(int(dia), int(mes), int(ano))
-            self.__lista.append(data)
+            self.adicionarDado()
+            
+    def adicionarDado(self):
+        data = input("Digite a data no formato dd/mm/aaaa: ")
+        dia, mes, ano = data.split("/")
+        data = Data(int(dia), int(mes), int(ano))
+        self.__lista.append(data)
     
     def mostraMediana(self):
         '''
@@ -242,10 +253,11 @@ class ListaSalarios(AnaliseDados):
         print("Digite a quantidade de salários que deseja inserir na lista: ")
         numero = int(input())
         for i in range(numero):
-            print("Digite o salário: ")
-            salario = float(input())
-            self.__lista.append(salario)
-        
+            self.adicionarDado()
+    
+    def adicionarDado(self):
+        salario = float(input("Digite o salário: "))
+        self.__lista.append(salario)   
 
     def mostraMediana(self):
         '''
@@ -305,9 +317,11 @@ class ListaIdades(AnaliseDados):
         print("Digite a quantidade de idades que deseja inserir na lista: ")
         numero = int(input())
         for i in range(numero):
-            print("Digite a idade: ")
-            idade = int(input())
-            self.__lista.append(idade)
+            self.adicionarDado()
+            
+    def adicionarDado(self):
+        idade = int(input("Digite a idade: "))
+        self.__lista.append(idade)
     
     def mostraMediana(self):
         '''
@@ -376,37 +390,64 @@ class Estatisticas:
         print ("Datas anteriores a 2019 modificadas:")
         for data in self.__lista[1].lista:
             print(data)
-            
-def main():
-    nomes = ListaNomes()
-    datas = ListaDatas()
-    salarios = ListaSalarios()
-    idades = ListaIdades()
     
-    listaListas = [nomes, datas, salarios, idades]
+class Menu:
+    def __init__(self):
+        self.__listaListas = [ListaNomes(), ListaDatas(), ListaSalarios(), ListaIdades()]
+        self.__estatisticas = Estatisticas(self.__listaListas)
+        self.__opcoes = {
+            1: self.__listaListas[0].adicionarDado,
+            2: self.__listaListas[1].adicionarDado,
+            3: self.__listaListas[2].adicionarDado,
+            4: self.__listaListas[3].adicionarDado,
+            5: self.__estatisticas.nomeSalarios,
+            6: self.__estatisticas.reajusteSalarios,
+            7: self.__estatisticas.modificaDatas,
+            8: self.__sair
+        }
     
-    estatisticas = Estatisticas(listaListas)
-    
-    for lista in listaListas:
-        lista.entradaDeDados()
-        lista.listarEmOrdem()
-        lista.mostraMediana()
-        lista.mostraMenor()
-        lista.mostraMaior()
-        lista.listarEmOrdem()
+    def __sair(self):
+        print("Saindo...")
+        exit()
         
-        print("___________________")
-        
+    def __limparTela(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
     
-    print("Estatisticas:")
-    estatisticas.nomeSalarios()
-    print("___________________")
-    estatisticas.reajusteSalarios()
-    print("___________________")
-    estatisticas.modificaDatas()
-    print("___________________")
+    def __mostraMenu(self):
+        self.__limparTela()
+        print("Escolha uma opção:")
+        print("1. Incluir um nome na lista de nomes")
+        print("2. Incluir uma data na lista de datas")
+        print("3. Incluir um salário na lista de salários")
+        print("4. Incluir uma idade na lista de idades")
+        print("5. Percorrer as listas de nomes e salários")
+        print("6. Calcular o valor da folha com um reajuste de 10%")
+        print("7. Modificar o dia das datas anteriores a 2019")
+        print("8. Sair")
 
-    print("Fim do teste!!!")
+        
+    def executa(self):
+        while True:
+            self.__mostraMenu()
+            opcao = input("Digite o número da opção desejada: ")
+            
+            if opcao.isdigit() and int(opcao) in self.__opcoes:
+                try:
+                    self.__opcoes[int(opcao)]()
+                except ValueError as e:
+                    print(e)
+                except Exception as e:
+                    print("Erro inesperado: ", e)
+            else:
+                print("Opção inválida. Por favor, digite um número de opção válido.")
+            
+            print("___________________")    
+            input("Pressione ENTER para continuar...")
+    
+
+def main(): 
+    menu = Menu()
+    menu.executa()
 
 if __name__ == "__main__":
     main()
