@@ -95,6 +95,10 @@ class AnaliseDados(ABC):
     def mostraMaior(self):
         pass
 
+    @abstractmethod
+    def listarEmOrdem(self):
+        pass
+
 class ListaNomes(AnaliseDados):
     
     def __init__(self):
@@ -108,7 +112,7 @@ class ListaNomes(AnaliseDados):
         print('Nomes inseridos com sucesso!')
         
     def mostraMediana(self):
-        self.__lista.sort()
+        self.listarEmOrdem()
         if len(self.__lista) % 2 == 0:
             print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
         else:
@@ -119,6 +123,9 @@ class ListaNomes(AnaliseDados):
     
     def mostraMaior(self):
         print(f'Maior : {self.__lista[-1]}')
+    
+    def listarEmOrdem(self):
+        self.__lista.sort()
 
     def __str__(self):
         pass
@@ -139,7 +146,7 @@ class ListaDatas(AnaliseDados):
         print('Datas inseridas com sucesso!')    
 
     def mostraMediana(self):
-        self.__lista.sort()
+        self.listarEmOrdem()
         if len(self.__lista) % 2 == 0:
             print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
         else:
@@ -151,6 +158,9 @@ class ListaDatas(AnaliseDados):
     def mostraMaior(self):
         print(f'Maior : {self.__lista[-1]}')
     
+    def listarEmOrdem(self):
+        self.__lista.sort()
+
     def __str__(self):
         pass
 
@@ -167,7 +177,7 @@ class ListaSalarios(AnaliseDados):
         print('Salários inseridos com sucesso!')
 
     def mostraMediana(self):
-        self.__lista.sort()
+        self.listarEmOrdem()
         if len(self.__lista) % 2 == 0:
             print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
         else:
@@ -179,6 +189,9 @@ class ListaSalarios(AnaliseDados):
     def mostraMaior(self):
         print(f'Maior : {self.__lista[-1]}')
         
+    def listarEmOrdem(self):
+        self.__lista.sort()
+    
     def __str__(self):
         pass
 
@@ -195,7 +208,7 @@ class ListaIdades(AnaliseDados):
         print('Idades inseridas com sucesso!')
         
     def mostraMediana(self):
-        self.__lista.sort()
+        self.listarEmOrdem()
         if len(self.__lista) % 2 == 0:
             print(f'Mediana : {self.__lista[len(self.__lista)//2]}')
         else:
@@ -207,6 +220,9 @@ class ListaIdades(AnaliseDados):
     
     def mostraMaior(self):
         print(f'Maior : {self.__lista[-1]}')
+    
+    def listarEmOrdem(self):
+        self.__lista.sort()
         
     def __str__(self):
         pass
