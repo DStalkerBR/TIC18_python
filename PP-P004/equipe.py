@@ -256,7 +256,7 @@ def percorrer_listas(listas):
     for lista in listas:
         print(f"Conteúdo da lista {type(lista).__name__}:")
         for item in lista._AnaliseDados__lista:
-            print(item)
+            print(f"{item:.2f}" if isinstance(item, float) else item)
         print("___________________")
 
 def calcular_folha_salarios(lista_salarios):
